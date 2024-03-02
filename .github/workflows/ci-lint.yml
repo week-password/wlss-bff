@@ -1,0 +1,129 @@
+name: Lint
+run-name: Lint commit "${{ github.sha }}"
+
+on:
+  push:
+    branches:
+      - "*"
+jobs:
+  mypy:
+    name: Mypy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Cache Docker layers
+        uses: ./.github/actions/docker/use-buildx-cache
+        env:
+          CACHE_KEY_PREFIX: 'envs-ci-lint'  # prefix should match directory which contains Dockerfile used for build
+
+      - name: Cache mypy
+        uses: actions/cache@v3
+        with:
+          path: ./.mypy_cache
+          key: mypy-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            mypy-${{ runner.os }}-${{ github.ref_name }}
+            mypy-${{ runner.os }}-${{ github.event.repository.default_branch }}
+
+      - name: Create .env file
+        run: source envs/ci/lint/env.sh
+
+      - name: Build mypy
+        run: docker compose --file envs/ci/lint/docker-compose.yml build mypy
+
+      - name: Run mypy
+        run: docker compose --file envs/ci/lint/docker-compose.yml run mypy
+
+      - name: Update buildx cache
+        env:
+          ENV_FILE: envs/ci/lint/.env
+        uses: ./.github/actions/docker/update-buildx-cache
+
+  ruff:
+    name: Ruff
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Cache Docker layers
+        uses: ./.github/actions/docker/use-buildx-cache
+        env:
+          CACHE_KEY_PREFIX: 'envs-ci-lint'  # prefix should match directory which contains Dockerfile used for build
+
+      - name: Cache ruff
+        uses: actions/cache@v3
+        with:
+          path: ./.ruff_cache
+          key: ruff-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ruff-${{ runner.os }}-${{ github.ref_name }}
+            ruff-${{ runner.os }}-${{ github.event.repository.default_branch }}
+
+      - name: Create .env file
+        run: source envs/ci/lint/env.sh
+
+      - name: Build ruff
+        run: docker compose --file envs/ci/lint/docker-compose.yml build ruff
+
+      - name: Run ruff
+        run: docker compose --file envs/ci/lint/docker-compose.yml run ruff
+
+      - name: Update buildx cache
+        env:
+          ENV_FILE: envs/ci/lint/.env
+        uses: ./.github/actions/docker/update-buildx-cache
+
+  flake8:
+    name: Flake8
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Cache Docker layers
+        uses: ./.github/actions/docker/use-buildx-cache
+        env:
+          CACHE_KEY_PREFIX: 'envs-ci-lint'  # prefix should match directory which contains Dockerfile used for build
+
+      - name: Create .env file
+        run: source envs/ci/lint/env.sh
+
+      - name: Build flake8
+        run: docker compose --file envs/ci/lint/docker-compose.yml build flake8
+
+      - name: Run flake8
+        run: docker compose --file envs/ci/lint/docker-compose.yml run flake8
+
+      - name: Update buildx cache
+        env:
+          ENV_FILE: envs/ci/lint/.env
+        uses: ./.github/actions/docker/update-buildx-cache
+
+  poetry:
+    name: Poetry
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Cache Docker layers
+        uses: ./.github/actions/docker/use-buildx-cache
+        env:
+          CACHE_KEY_PREFIX: 'envs-ci-lint'  # prefix should match directory which contains Dockerfile used for build
+
+      - name: Create .env file
+        run: source envs/ci/lint/env.sh
+
+      - name: Build poetry
+        run: docker compose --file envs/ci/lint/docker-compose.yml build poetry
+
+      - name: Run poetry
+        run: docker compose --file envs/ci/lint/docker-compose.yml run poetry
+
+      - name: Update buildx cache
+        env:
+          ENV_FILE: envs/ci/lint/.env
+        uses: ./.github/actions/docker/update-buildx-cache
