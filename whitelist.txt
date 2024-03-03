@@ -1,0 +1,20 @@
+# python library
+anyio
+
+# enumerations
+enums
+
+# FastAPI framework
+fastapi
+
+# get fixture value (used by `pytest` library)
+getfixturevalue
+
+# OpenAPI specification
+openapi
+
+# Pydantic framework
+pydantic
+
+# source
+src
