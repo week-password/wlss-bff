@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TypeVar
 
+from api.shared import schemas as api_schemas
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -9,10 +10,14 @@ from pydantic.alias_generators import to_camel
 T = TypeVar("T", bound=BaseModel)
 
 
-class Schema(BaseModel):
+class Schema(api_schemas.Schema):
     """Customized 'BaseModel' class from pydantic."""
 
-    model_config = ConfigDict(alias_generator=to_camel)
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+    @classmethod
+    def from_(cls: type[T], model: api_schemas.Schema) -> T:
+        return cls.model_validate(model.model_dump())
 
 
 class HTTPError(Schema):

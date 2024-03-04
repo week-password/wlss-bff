@@ -5,5 +5,5 @@ from pydantic import BaseModel
 from src.health.enums import HealthStatus
 
 
-class Health(BaseModel):
+class HealthResponse(BaseModel):
     status: HealthStatus

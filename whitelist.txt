@@ -1,8 +1,14 @@
 # python library
 anyio
 
+# CORS - Cross-Origin Resource Sharing
+cors
+
 # Data Transfer Objects
 dtos
+
+# dotenv
+dotenv
 
 # enumerations
 enums
@@ -28,6 +34,9 @@ jpe
 # jpg - image format
 jpg
 
+# mountebank test
+mbtest
+
 # name of (function from `varname` package)
 nameof
 
@@ -46,6 +55,9 @@ tmp
 # time zone
 tz
 
+# unit-test
+unittest
+
 # validator
 validator
 
@@ -54,6 +66,9 @@ varname
 
 # webp - image format
 webp
+
+# whitespaces
+whitespaces
 
 # project id, stands for "Wish List Sharing Service"
 wlss

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any, TypeVar
 
-from pydantic import Field, model_validator
+from api.shared.fields import IdField, UuidField
+from pydantic import Field
 
 from src.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
-from src.shared.fields import IdField, UuidField
 from src.shared.schemas import Schema
 
 
@@ -16,22 +16,6 @@ class CreateSessionRequest(Schema):
     email: AccountEmailField | None = Field(None, example="john.doe@mail.com")
     login: AccountLoginField | None = Field(None, example="john_doe")
     password: AccountPasswordField = Field(..., example="qwerty123")
-
-    @model_validator(mode="before")
-    @classmethod  # to silent mypy error, because mypy doesn't recognize model_validator as a classmethod
-    def _require_login_or_email(cls: type[CreateSessionRequest], values: DictT) -> DictT:
-        if not (values.get("login") or values.get("email")):
-            msg = "Either 'login' or 'email' is required."
-            raise ValueError(msg)
-        return values
-
-    @model_validator(mode="before")
-    @classmethod  # to silent mypy error, because mypy doesn't recognize model_validator as a classmethod
-    def _forbid_login_and_email_together(cls: type[CreateSessionRequest], values: DictT) -> DictT:
-        if values.get("login") and values.get("email"):
-            msg = "You cannot use 'login' and 'email' together. Choose one of them."
-            raise ValueError(msg)
-        return values
 
 
 class CreateSessionResponse(Schema):

@@ -94,20 +94,26 @@ To run tests you need to do all steps from [First time setup](#first-time-setup)
 
 1. Run services and tests:
 ```bash
+# Create .env file
+source envs/local/test/env.sh
+
+# Run services.
+docker compose --file=envs/local/test/docker-compose.yml up --detach
+
 # Run pytest.
-pytest --cov=src
+WLSS_ENV=local/test pytest --cov=src
 ```
 
 Also you can choose one of the following ways of running tests:
 
 - Tests with html coverage report:
 ```bash
-pytest --cov=src ; coverage html
+WLSS_ENV=local/test pytest --cov=src ; coverage html
 ```
 
 - Tests with execution contexts in report:
 ```bash
-pytest --cov=src --cov-context=test ; coverage html --show-contexts --no-skip-covered
+WLSS_ENV=local/test pytest --cov=src --cov-context=test ; coverage html --show-contexts --no-skip-covered
 ```
 
 

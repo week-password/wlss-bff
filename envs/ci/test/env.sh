@@ -17,6 +17,12 @@ ENV_FILE=$SCRIPT_DIR/.env
 cat > $ENV_FILE << EOF
 BUILDX_CACHE_DEST="/tmp/.buildx-cache-new"
 BUILDX_CACHE_SRC="/tmp/.buildx-cache"
+
+BFF_URL="http://mountebank:8080"
+
+MOUNTEBANK_SERVER_HOST="mountebank"
+MOUNTEBANK_SERVER_PORT="2525"
+MOUNTEBANK_IMPOSTOR_PORT="8080"
 EOF
 
 # ======================================================================================================================

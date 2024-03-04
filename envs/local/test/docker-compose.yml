@@ -1,0 +1,8 @@
+name: wlss-bff-local-test
+
+services:
+  mountebank:
+    image: bbyars/mountebank:2.9.1
+    ports:
+      - 127.0.0.1:2525:2525  # mountebank server
+      - 127.0.0.1:8080:8080  # impostor server

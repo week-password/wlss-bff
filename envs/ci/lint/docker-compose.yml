@@ -1,4 +1,4 @@
-name: wlss-ci-lint
+name: wlss-bff-ci-lint
 
 services:
   app-build: &app-build

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends, Path, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi import APIRouter, Body, Path, status
 
+from src.account import controllers
 from src.account.dtos import (
     CreateAccountRequest,
     CreateAccountResponse,
@@ -13,6 +13,7 @@ from src.account.dtos import (
     MatchAccountLoginRequest,
 )
 from src.account.fields import AccountLoginField
+from src.auth.dependencies import Authorization
 from src.shared import swagger as shared_swagger
 
 
@@ -27,11 +28,12 @@ router = APIRouter(tags=["account"])
     },
     status_code=status.HTTP_201_CREATED,
     summary="Sign Up - create a new account.",
+    tags=["auth"],
 )
-async def create_account(  # type: ignore[empty-body]
-    request_data: Annotated[CreateAccountRequest, Body()],  # noqa: ARG001
+async def create_account(
+    request_data: Annotated[CreateAccountRequest, Body()],
 ) -> CreateAccountResponse:
-    ...  # pragma: no cover
+    return await controllers.create_account(request_data)
 
 
 @router.get(
@@ -45,19 +47,11 @@ async def create_account(  # type: ignore[empty-body]
     status_code=status.HTTP_200_OK,
     summary="Get Account Id.",
 )
-async def get_account_id(  # type: ignore[empty-body]
-    account_login: Annotated[AccountLoginField, Path(example="john_doe")],  # noqa: ARG001
-    authorization: Annotated[  # noqa: ARG001
-        HTTPAuthorizationCredentials,
-        Depends(
-            HTTPBearer(
-                scheme_name="Access token",
-                description="Short-living token needed to authenticate the request.",
-            ),
-        ),
-    ],
+async def get_account_id(
+    account_login: Annotated[AccountLoginField, Path(example="john_doe")],
+    authorization: Authorization,
 ) -> GetAccountIdResponse:
-    ...  # pragma: no cover
+    return await controllers.get_account_id(account_login, authorization)
 
 
 @router.post(
@@ -72,9 +66,9 @@ async def get_account_id(  # type: ignore[empty-body]
     summary="Check login uniqueness.",
 )
 async def match_account_login(
-    request_data: Annotated[MatchAccountLoginRequest, Body()],  # noqa: ARG001
+    request_data: Annotated[MatchAccountLoginRequest, Body()],
 ) -> None:
-    ...  # pragma: no cover
+    return await controllers.match_account_login(request_data)
 
 @router.post(
     "/accounts/emails/match",
@@ -88,6 +82,6 @@ async def match_account_login(
     summary="Check email uniqueness.",
 )
 async def match_account_email(
-    request_data: Annotated[MatchAccountEmailRequest, Body()],  # noqa: ARG001
+    request_data: Annotated[MatchAccountEmailRequest, Body()],
 ) -> None:
-    ...  # pragma: no cover
+    return await controllers.match_account_email(request_data)

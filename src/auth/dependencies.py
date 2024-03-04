@@ -6,7 +6,7 @@ from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
-AccessToken = Annotated[
+Authorization = Annotated[
     HTTPAuthorizationCredentials,
     Depends(
         HTTPBearer(

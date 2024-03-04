@@ -15,9 +15,8 @@ ENV_FILE=$SCRIPT_DIR/.env
 # https://stackoverflow.com/a/71538763/8431075
 
 cat > $ENV_FILE << EOF
-BFF_URL=""  # put actual url to BFF instance, like "http://185.154.195.26:8000"
+BFF_URL="http://localhost:8080"
 
-# Mountebank settings doesn't matter in QA env
 MOUNTEBANK_SERVER_HOST="localhost"
 MOUNTEBANK_SERVER_PORT="2525"
 MOUNTEBANK_IMPOSTOR_PORT="8080"
@@ -30,6 +29,7 @@ cat << EOF
 Default environment variables has been written to:
 $ENV_FILE
 
-Please adjust variables in this file.
+This setup should just work fine right out of the box,
+but you can adjust this file in the way you want.
 
 EOF

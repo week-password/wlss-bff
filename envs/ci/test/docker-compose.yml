@@ -1,4 +1,4 @@
-name: wlss-ci-test
+name: wlss-bff-ci-test
 
 services:
   app-build: &app-build
@@ -12,7 +12,14 @@ services:
 
   pytest:
     <<: *app-build
+    depends_on:
+      - mountebank
+    environment:
+      - WLSS_ENV=ci/test
     volumes:
       # bind .pytest_cache to the host in order to store pytest cache in GitHub Cache
       - ../../../.pytest_cache:/wlss-bff/.pytest_cache  # host path is relative to the current docker-compose file
     entrypoint: pytest --cov=src
+
+  mountebank:
+    image: bbyars/mountebank:2.9.1
