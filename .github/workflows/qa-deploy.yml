@@ -1,0 +1,30 @@
+name: Deploy to QA stand
+run-name: Deploy commit "${{ github.sha }}"
+
+on:
+  push:
+    tags:
+      - deployed/qa
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Run deploy script via ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.QA_STAND_SSH_HOST }}
+          username: ${{ secrets.QA_STAND_SSH_USERNAME }}
+          password: ${{ secrets.QA_STAND_SSH_PASSWORD }}
+          script: |
+            cd /wlss-bff
+            docker compose -f envs/qa/deploy/docker-compose.yml down
+
+            # fetch tag even if it was force pushed and checkout
+            git fetch origin +refs/tags/deployed/qa:refs/tags/deployed/qa
+            git checkout deployed/qa
+
+            docker compose -f envs/qa/deploy/docker-compose.yml up --build --detach
