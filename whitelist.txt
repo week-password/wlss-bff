@@ -1,14 +1,35 @@
 # python library
 anyio
 
+# Data Transfer Objects
+dtos
+
 # enumerations
 enums
+
+# End Of File
+EOF
 
 # FastAPI framework
 fastapi
 
 # get fixture value (used by `pytest` library)
 getfixturevalue
+
+# jfif - image format
+jfif
+
+# jif - image format
+jif
+
+# jpe - image format
+jpe
+
+# jpg - image format
+jpg
+
+# name of (function from `varname` package)
+nameof
 
 # OpenAPI specification
 openapi
@@ -18,3 +39,21 @@ pydantic
 
 # source
 src
+
+# temporary
+tmp
+
+# time zone
+tz
+
+# validator
+validator
+
+# variable name (`varname` python package)
+varname
+
+# webp - image format
+webp
+
+# project id, stands for "Wish List Sharing Service"
+wlss

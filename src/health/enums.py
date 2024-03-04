@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import enum
+from src.shared.enum import Enum
 
 
-class HealthStatus(enum.Enum):
+class HealthStatus(Enum):
     """Possible health statuses."""
 
     OK = "OK"
