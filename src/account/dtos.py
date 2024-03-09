@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from api.shared.fields import IdField, UtcDatetimeField, UuidField
-from pydantic import Field
+from pydantic import Field, RootModel
 
 from src.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
 from src.profile.fields import ProfileDescriptionField, ProfileNameField
@@ -37,8 +37,11 @@ class CreateAccountResponse(Schema):
         name: ProfileNameField = Field(..., example="John Doe")
 
 
-class GetAccountIdResponse(Schema):
-    id: IdField = Field(..., example=42)
+class GetAccountsResponse(RootModel):  # type: ignore[type-arg]
+    root: list[_Account]
+    class _Account(Schema):  # noqa: E301
+        id: IdField = Field(..., example=42)
+        login: AccountLoginField = Field(..., example="john_doe")
 
 
 class MatchAccountLoginRequest(Schema):

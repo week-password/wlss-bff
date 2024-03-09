@@ -4,10 +4,12 @@ from typing import TYPE_CHECKING
 
 from api.account import dtos as api_dtos
 from api.client import Api
+from wlss.account.types import AccountLogin
+from wlss.shared.types import Id
 
 from src.account.dtos import (
     CreateAccountResponse,
-    GetAccountIdResponse,
+    GetAccountsResponse,
 )
 from src.config import CONFIG
 
@@ -16,7 +18,6 @@ if TYPE_CHECKING:
     from fastapi.security import HTTPAuthorizationCredentials
 
     from src.account.dtos import CreateAccountRequest, MatchAccountEmailRequest, MatchAccountLoginRequest
-    from src.account.fields import AccountLoginField
 
 
 async def create_account(request_data: CreateAccountRequest) -> CreateAccountResponse:
@@ -26,13 +27,18 @@ async def create_account(request_data: CreateAccountRequest) -> CreateAccountRes
     return CreateAccountResponse.from_(response)
 
 
-async def get_account_id(
-    account_login: AccountLoginField,
+async def get_accounts(
+    account_ids: list[Id],
+    account_logins: list[AccountLogin],
     authorization: HTTPAuthorizationCredentials,
-) -> GetAccountIdResponse:
+) -> GetAccountsResponse:
     api = Api(base_url=CONFIG.BFF_URL)
-    response = await api.account.get_account_id(account_login, authorization.credentials)
-    return GetAccountIdResponse.from_(response)
+    response = await api.account.get_accounts(
+        account_ids=[Id(id_) for id_ in account_ids],
+        account_logins=[AccountLogin(login) for login in account_logins],
+        token=authorization.credentials,
+    )
+    return GetAccountsResponse.model_validate(response.accounts, from_attributes=True)
 
 
 async def match_account_login(request_data: MatchAccountLoginRequest) -> None:

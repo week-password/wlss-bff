@@ -43,6 +43,9 @@ nameof
 # OpenAPI specification
 openapi
 
+# parameters
+params
+
 # Pydantic framework
 pydantic
 

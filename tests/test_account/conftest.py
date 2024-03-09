@@ -43,8 +43,24 @@ def create_account_response():
 
 
 @pytest.fixture
-def get_account_id_request():
-    return Predicate(method="GET", path="/accounts/logins/john_doe/id", headers={"Authorization": "Bearer token"})
+def get_accounts_request_for_two_accounts():
+    return Predicate(
+        method="GET",
+        path="/accounts",
+        query={"account_id": "1", "account_login": "john_smith"},
+        headers={"Authorization": "Bearer token"},
+    )
+
+
+@pytest.fixture
+def get_accounts_response_for_two_accounts():
+    response_body = {
+        "accounts": [
+            {"id": 1, "login": "john_doe"},
+            {"id": 2, "login": "john_smith"},
+        ],
+    }
+    return Response(body=response_body, status_code=200, headers={"content-type": "application/json"})
 
 
 @pytest.fixture
@@ -58,6 +74,21 @@ def match_account_login_response():
 
 
 @pytest.fixture
+def match_account_login_request_for_nonexistent_account():
+    return Predicate(method="POST", path="/accounts/logins/match", body={"login": "john_smith"})
+
+
+@pytest.fixture
+def match_account_login_response_for_nonexistent_account():
+    response_body = {
+        "resource": "Account",
+        "description": "Requested resource not found.",
+        "details": "Requested resource doesn't exist or has been deleted.",
+    }
+    return Response(body=response_body, status_code=404)
+
+
+@pytest.fixture
 def match_account_email_request():
     return Predicate(method="POST", path="/accounts/emails/match", body={"email": "john.doe@mail.com"})
 
@@ -65,19 +96,3 @@ def match_account_email_request():
 @pytest.fixture
 def match_account_email_response():
     return Response(body=None, status_code=204)
-
-
-@pytest.fixture
-def get_account_id_response():
-    response_body = {"id": 42}
-    return Response(body=json.dumps(response_body), status_code=200, headers={"content-type": "application/json"})
-
-
-@pytest.fixture
-def get_account_id_404_response():
-    response_body = {
-        "resource": "Account",
-        "description": "Requested resource not found.",
-        "details": "Requested resource doesn't exist or has been deleted.",
-    }
-    return Response(body=json.dumps(response_body), status_code=404, headers={"content-type": "application/json"})
