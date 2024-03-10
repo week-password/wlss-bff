@@ -18,9 +18,9 @@ if TYPE_CHECKING:
 
 
 async def create_session(request_data: CreateSessionRequest) -> CreateSessionResponse:
-    api = Api(base_url=CONFIG.BFF_URL)
     api_request_data = api_dtos.CreateSessionRequest.from_(request_data)
-    response = await api.auth.create_session(api_request_data)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        response = await api.auth.create_session(api_request_data)
     return CreateSessionResponse.from_(response)
 
 
@@ -29,8 +29,8 @@ async def refresh_tokens(
     session_id: UuidField,
     authorization: HTTPAuthorizationCredentials,
 ) -> RefreshTokensResponse:
-    api = Api(base_url=CONFIG.BFF_URL)
-    response = await api.auth.refresh_tokens(account_id, session_id, authorization.credentials)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        response = await api.auth.refresh_tokens(account_id, session_id, authorization.credentials)
     return RefreshTokensResponse.from_(response)
 
 
@@ -39,13 +39,13 @@ async def delete_session(
     session_id: UuidField,
     authorization: HTTPAuthorizationCredentials,
 ) -> None:
-    api = Api(base_url=CONFIG.BFF_URL)
-    await api.auth.delete_session(account_id, session_id, authorization.credentials)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        await api.auth.delete_session(account_id, session_id, authorization.credentials)
 
 
 async def delete_all_sessions(
     account_id: IdField,
     authorization: HTTPAuthorizationCredentials,
 ) -> None:
-    api = Api(base_url=CONFIG.BFF_URL)
-    await api.auth.delete_all_sessions(account_id, authorization.credentials)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        await api.auth.delete_all_sessions(account_id, authorization.credentials)

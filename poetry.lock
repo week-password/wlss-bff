@@ -51,8 +51,8 @@ wlss = {git = "https://github.com/week-password/wlss-backend-lib.git", rev = "e2
 [package.source]
 type = "git"
 url = "https://github.com/week-password/wlss-backend.git"
-reference = "f7ab0158088e9b411c556065de90bccd7533b13c"
-resolved_reference = "f7ab0158088e9b411c556065de90bccd7533b13c"
+reference = "982cdadae5fb68c2567ba5171b91002f08f25eaa"
+resolved_reference = "982cdadae5fb68c2567ba5171b91002f08f25eaa"
 
 [[package]]
 name = "beautifulsoup4"
@@ -1910,4 +1910,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "478e313cd6baa6798d9d409c18cd6b6ee28633af2e74c05de5db6ee082c158c9"
+content-hash = "fc8f5a85c40055edc30f05f97c3d1106bde66a99863e55f8b1ef6acb82de8de4"

@@ -22,16 +22,16 @@ async def create_file(
     request_data: CreateFileRequest,
     authorization: HTTPAuthorizationCredentials,
 ) -> CreateFileResponse:
-    api = Api(base_url=CONFIG.BFF_URL)
     api_request_data = api_dtos.CreateFileRequest.from_(request_data)
-    response = await api.file.create_file(api_request_data, authorization.credentials)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        response = await api.file.create_file(api_request_data, authorization.credentials)
     return CreateFileResponse.from_(response)
 
 
 async def get_file(file_id: UuidField, authorization: HTTPAuthorizationCredentials, tmp_dir: Path) -> GetFileResponse:
-    api = Api(base_url=CONFIG.BFF_URL)
     tmp_file_path = tmp_dir / str(file_id)
-    response = await api.file.get_file(file_id, authorization.credentials, tmp_file_path)
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        response = await api.file.get_file(file_id, authorization.credentials, tmp_file_path)
     return GetFileResponse(
         path=response.path,
         status_code=response.status_code,
