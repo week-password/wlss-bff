@@ -15,10 +15,10 @@ ENV_FILE=$SCRIPT_DIR/.env
 # https://stackoverflow.com/a/71538763/8431075
 
 cat > $ENV_FILE << EOF
+BACKEND_API_URL="http://mountebank:8080"
+
 BUILDX_CACHE_DEST="/tmp/.buildx-cache-new"
 BUILDX_CACHE_SRC="/tmp/.buildx-cache"
-
-BFF_URL="http://mountebank:8080"
 
 MOUNTEBANK_SERVER_HOST="mountebank"
 MOUNTEBANK_SERVER_PORT="2525"

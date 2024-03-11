@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 async def create_account(request_data: CreateAccountRequest) -> CreateAccountResponse:
     api_request_data = api_dtos.CreateAccountRequest.from_(request_data)
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         response = await api.account.create_account(api_request_data)
     return CreateAccountResponse.from_(response)
 
@@ -33,7 +33,7 @@ async def get_account_by_login(
     account_login: AccountLogin,
     authorization: HTTPAuthorizationCredentials,
 ) -> GetAccountByLoginResponse:
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         response = await api.account.get_accounts(account_logins=[account_login], token=authorization.credentials)
     if not response.accounts:
         raise AccountNotFoundError()
@@ -46,7 +46,7 @@ async def get_accounts(
     account_logins: list[AccountLogin],
     authorization: HTTPAuthorizationCredentials,
 ) -> GetAccountsResponse:
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         response = await api.account.get_accounts(
             account_ids=[Id(id_) for id_ in account_ids],
             account_logins=[AccountLogin(login) for login in account_logins],
@@ -57,11 +57,11 @@ async def get_accounts(
 
 async def match_account_login(request_data: MatchAccountLoginRequest) -> None:
     api_request_data = api_dtos.MatchAccountLoginRequest.from_(request_data)
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         await api.account.match_account_login(api_request_data)
 
 
 async def match_account_email(request_data: MatchAccountEmailRequest) -> None:
     api_request_data = api_dtos.MatchAccountEmailRequest.from_(request_data)
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         await api.account.match_account_email(api_request_data)

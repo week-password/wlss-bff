@@ -18,7 +18,7 @@ T = TypeVar("T", bound=Any)
 
 
 class _Config(BaseSettings):
-    BFF_URL: str
+    BACKEND_API_URL: str
 
     MOUNTEBANK_SERVER_HOST: str
     MOUNTEBANK_SERVER_PORT: str

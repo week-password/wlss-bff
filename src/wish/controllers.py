@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 async def delete_wish(account_id: Id, wish_id: Id, authorization: HTTPAuthorizationCredentials) -> None:
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         await api.wish.delete_wish(account_id, wish_id, authorization.credentials)
 
 
@@ -27,7 +27,7 @@ async def create_wish_booking(
     authorization: HTTPAuthorizationCredentials,
 ) -> None:
     api_request_data = api_dtos.CreateWishBookingRequest.from_(request_data)
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         await api.wish.create_wish_booking(account_id, wish_id, api_request_data, authorization.credentials)
 
 
@@ -37,5 +37,5 @@ async def delete_wish_booking(
     booking_id: Id,
     authorization: HTTPAuthorizationCredentials,
 ) -> None:
-    async with Api(base_url=CONFIG.BFF_URL) as api:
+    async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
         await api.wish.delete_wish_booking(account_id, wish_id, booking_id, authorization.credentials)

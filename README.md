@@ -59,6 +59,9 @@ To run application you need to do all steps from [First time setup](#first-time-
 
 1. Run app:
 ```bash
+# Create .env file
+source envs/local/dev/env.sh
+
 # Run development server.
 WLSS_ENV=local/dev uvicorn src.app:app --reload
 ```
