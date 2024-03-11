@@ -9,8 +9,10 @@ from wlss.shared.types import Id
 
 from src.account.dtos import (
     CreateAccountResponse,
+    GetAccountByLoginResponse,
     GetAccountsResponse,
 )
+from src.account.exceptions import AccountNotFoundError
 from src.config import CONFIG
 
 
@@ -25,6 +27,18 @@ async def create_account(request_data: CreateAccountRequest) -> CreateAccountRes
     async with Api(base_url=CONFIG.BFF_URL) as api:
         response = await api.account.create_account(api_request_data)
     return CreateAccountResponse.from_(response)
+
+
+async def get_account_by_login(
+    account_login: AccountLogin,
+    authorization: HTTPAuthorizationCredentials,
+) -> GetAccountByLoginResponse:
+    async with Api(base_url=CONFIG.BFF_URL) as api:
+        response = await api.account.get_accounts(account_logins=[account_login], token=authorization.credentials)
+    if not response.accounts:
+        raise AccountNotFoundError()
+    assert len(response.accounts) == 1
+    return GetAccountByLoginResponse.from_(response.accounts[0])
 
 
 async def get_accounts(

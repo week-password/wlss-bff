@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 import src.routes
-from src.shared.exceptions import TooLargeException
+from src.shared.exceptions import NotFoundException, TooLargeException
 
 
 if TYPE_CHECKING:
@@ -63,6 +63,18 @@ def handle_http_error(_: Request, exception: httpx.HTTPStatusError) -> JSONRespo
     return JSONResponse(
         status_code=exception.response.status_code,
         content=exception.response.json(),
+    )
+
+
+@app.exception_handler(NotFoundException)
+async def handle_not_found(_: Request, exception: NotFoundException) -> JSONResponse:
+    return JSONResponse(
+        status_code=exception.status_code,
+        content={
+            "resource": exception.resource,
+            "description": exception.description,
+            "details": exception.details,
+        },
     )
 
 

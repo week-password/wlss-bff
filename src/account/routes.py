@@ -5,11 +5,13 @@ from typing import Annotated
 from api.account.fields import AccountLoginField
 from api.shared.fields import IdField
 from fastapi import APIRouter, Body, Query, status
+from fastapi.params import Path
 
 from src.account import controllers
 from src.account.dtos import (
     CreateAccountRequest,
     CreateAccountResponse,
+    GetAccountByLoginResponse,
     GetAccountsResponse,
     MatchAccountEmailRequest,
     MatchAccountLoginRequest,
@@ -35,6 +37,24 @@ async def create_account(
     request_data: Annotated[CreateAccountRequest, Body()],
 ) -> CreateAccountResponse:
     return await controllers.create_account(request_data)
+
+
+@router.get(
+    "/accounts/logins/{account_login}",
+    description="Get account. Account info is available for every logged in user.",
+    responses={
+        status.HTTP_200_OK: {"description": "Account info returned"},
+        status.HTTP_401_UNAUTHORIZED: shared_swagger.responses[status.HTTP_401_UNAUTHORIZED],
+        status.HTTP_404_NOT_FOUND: shared_swagger.responses[status.HTTP_404_NOT_FOUND],
+    },
+    status_code=status.HTTP_200_OK,
+    summary="Get account.",
+)
+async def get_account_by_login(
+    authorization: Authorization,
+    account_login: Annotated[AccountLoginField, Path(example="john_doe")],
+) -> GetAccountByLoginResponse:
+    return await controllers.get_account_by_login(account_login, authorization)
 
 
 @router.get(

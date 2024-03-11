@@ -37,6 +37,11 @@ class CreateAccountResponse(Schema):
         name: ProfileNameField = Field(..., example="John Doe")
 
 
+class GetAccountByLoginResponse(Schema):
+    id: IdField = Field(..., example=42)
+    login: AccountLoginField = Field(..., example="john_doe")
+
+
 class GetAccountsResponse(RootModel):  # type: ignore[type-arg]
     root: list[_Account]
     class _Account(Schema):  # noqa: E301
