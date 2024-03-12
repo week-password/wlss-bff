@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any, TypeVar
 
+from api.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
 from api.shared.fields import IdField, UuidField
 from pydantic import Field
 
-from src.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
 from src.shared.schemas import Schema
 
 

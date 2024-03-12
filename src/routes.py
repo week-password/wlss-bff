@@ -6,6 +6,7 @@ import src.account.routes
 import src.auth.routes
 import src.file.routes
 import src.health.routes
+import src.profile.routes
 import src.wish.routes
 
 
@@ -16,4 +17,5 @@ router.include_router(src.account.routes.router)
 router.include_router(src.auth.routes.router)
 router.include_router(src.file.routes.router)
 router.include_router(src.health.routes.router)
+router.include_router(src.profile.routes.router)
 router.include_router(src.wish.routes.router)

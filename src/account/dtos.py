@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+from api.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
+from api.profile.fields import ProfileDescriptionField, ProfileNameField
 from api.shared.fields import IdField, UtcDatetimeField, UuidField
 from pydantic import Field, RootModel
 
-from src.account.fields import AccountEmailField, AccountLoginField, AccountPasswordField
-from src.profile.fields import ProfileDescriptionField, ProfileNameField
 from src.shared.schemas import Schema
 
 
