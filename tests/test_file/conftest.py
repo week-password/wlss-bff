@@ -27,11 +27,7 @@ def create_file_response():
 
 @pytest.fixture
 def get_file_request():
-    return Predicate(
-        method="GET",
-        path="/files/d3bb68db-052f-4851-b74d-d9c884fd43df",
-        headers={"Authorization": "Bearer token"},
-    )
+    return Predicate(method="GET", path="/files/d3bb68db-052f-4851-b74d-d9c884fd43df")
 
 
 @pytest.fixture

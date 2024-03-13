@@ -12,7 +12,7 @@ async def test_create_file_returns_201_with_correct_response(f):
     result = await f.client.post(
         "/files",
         headers={"Authorization": "Bearer token"},
-        files={"upload_file": ("image.png", b"image binary data", "image/png")},
+        files={"file": ("image.png", b"image binary data", "image/png")},
     )
 
     assert result.status_code == 201
@@ -32,7 +32,7 @@ async def test_create_file_with_too_large_file_returns_413_with_correct_response
     result = await f.client.post(
         "/files",
         headers={"Authorization": "Bearer token"},
-        files={"upload_file": ("image.png", large_image_data, "image/png")},
+        files={"file": ("image.png", large_image_data, "image/png")},
     )
 
     assert result.status_code == 413
@@ -49,7 +49,7 @@ async def test_create_file_with_filename_without_extension_returns_422_with_corr
     result = await f.client.post(
         "/files",
         headers={"Authorization": "Bearer token"},
-        files={"upload_file": ("image", b"image binary data", "image/png")},
+        files={"file": ("image", b"image binary data", "image/png")},
     )
 
     assert result.status_code == 422

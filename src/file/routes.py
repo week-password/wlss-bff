@@ -50,7 +50,6 @@ async def create_file(
 async def get_file(
     background_tasks: BackgroundTasks,  # noqa: ARG001
     file_id: Annotated[UuidField, Path(example="47b3d7a9-d7d3-459a-aac1-155997775a0e")],
-    authorization: Authorization,
     tmp_dir: Annotated[pathlib.Path, Depends(get_tmp_dir)],
 ) -> GetFileResponse:
-    return await controllers.get_file(file_id, authorization, tmp_dir)
+    return await controllers.get_file(file_id, tmp_dir)

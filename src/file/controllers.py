@@ -28,10 +28,10 @@ async def create_file(
     return CreateFileResponse.from_(response)
 
 
-async def get_file(file_id: UuidField, authorization: HTTPAuthorizationCredentials, tmp_dir: Path) -> GetFileResponse:
+async def get_file(file_id: UuidField, tmp_dir: Path) -> GetFileResponse:
     tmp_file_path = tmp_dir / str(file_id)
     async with Api(base_url=CONFIG.BACKEND_API_URL) as api:
-        response = await api.file.get_file(file_id, authorization.credentials, tmp_file_path)
+        response = await api.file.get_file(file_id, tmp_file_path)
     return GetFileResponse(
         path=response.path,
         status_code=response.status_code,
