@@ -15,6 +15,8 @@ Backend For Frontend application for [Wish List Sharing Service](https://github.
 
 [Run tests](#run-tests)
 
+[Deploy](#deploy)
+
 
 ***
 
