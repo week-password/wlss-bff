@@ -32,6 +32,10 @@ app = FastAPI(
             "description": "File related functionality for downloading and uploading files.",
         },
         {
+            "name": "friendship",
+            "description": "Friendship and friendship request related functionality.",
+        },
+        {
             "name": "profile",
             "description": "Profile related functionality for managing profiles.",
         },
