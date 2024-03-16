@@ -15,3 +15,14 @@ Authorization = Annotated[
         ),
     ),
 ]
+
+
+AuthorizationRefresh = Annotated[
+    HTTPAuthorizationCredentials,
+    Depends(
+        HTTPBearer(
+            scheme_name="Refresh token",
+            description="Long-living token needed to refresh expired tokens.",
+        ),
+    ),
+]

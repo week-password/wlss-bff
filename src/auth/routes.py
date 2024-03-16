@@ -6,7 +6,7 @@ from api.shared.fields import IdField, UuidField
 from fastapi import APIRouter, Body, Path, status
 
 from src.auth import controllers
-from src.auth.dependencies import Authorization
+from src.auth.dependencies import Authorization, AuthorizationRefresh
 from src.auth.dtos import CreateSessionRequest, CreateSessionResponse, RefreshTokensResponse
 from src.shared import swagger as shared_swagger
 
@@ -46,7 +46,7 @@ async def create_session(
 async def refresh_tokens(
     account_id: Annotated[IdField, Path(example=42)],
     session_id: Annotated[UuidField, Path(example="b9dd3a32-aee8-4a6b-a519-def9ca30c9ec")],
-    authorization: Authorization,
+    authorization: AuthorizationRefresh,
 ) -> RefreshTokensResponse:
     return await controllers.refresh_tokens(account_id, session_id, authorization)
 
