@@ -38,14 +38,18 @@ def f(request):
         setattr(fixtures, fixture_alias, fixture)
     return fixtures
 
-
-@pytest.fixture(scope="session")
+@pytest.fixture
 def mountebank():
-    return MountebankServer(host=CONFIG.MOUNTEBANK_SERVER_HOST, port=CONFIG.MOUNTEBANK_SERVER_PORT)
+    mountebank = MountebankServer(host=CONFIG.MOUNTEBANK_SERVER_HOST, port=CONFIG.MOUNTEBANK_SERVER_PORT)
+    for impostor in mountebank.query_all_imposters():
+        mountebank.delete_impostor(impostor)
+    imposters = mountebank.query_all_imposters()
+    assert len(imposters) == 0
+    return mountebank
 
 
 @pytest.fixture
-def api_configured_with_api_stubs(mountebank, request):  # noqa: PT004
+def api_configured_with_api_stubs(mountebank, request):
     stubs = []
     if marker := request.node.get_closest_marker("api_stubs"):
         for request_fixture_name, response_fixture_name in marker.args:
@@ -60,5 +64,6 @@ def api_configured_with_api_stubs(mountebank, request):  # noqa: PT004
             status_code=500,
         ),
     )
-    with mountebank(imposter):
-        yield
+    mountebank = request.getfixturevalue("mountebank")
+    mountebank.add_impostor(imposter)
+    return imposter
