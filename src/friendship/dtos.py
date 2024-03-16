@@ -18,3 +18,15 @@ class GetOutgoingRequestsResponse(RootModel):  # type: ignore[type-arg]
         avatar_id: UuidField | None = Field(..., example="b9dd3a32-aee8-4a6b-a519-def9ca30c9ec")
         description: ProfileDescriptionField | None = Field(..., example="Who da heck is John Doe?")
         name: ProfileNameField = Field(..., example="John Doe")
+
+
+class GetIncomingRequestsResponse(RootModel):  # type: ignore[type-arg]
+    root: list[_Friend]
+    class _Friend(Schema):
+        account: _Account
+        class _Account(Schema):
+            id: IdField = Field(..., example=42)
+            login: AccountLoginField = Field(..., example="john_doe")
+        avatar_id: UuidField | None = Field(..., example="b9dd3a32-aee8-4a6b-a519-def9ca30c9ec")
+        description: ProfileDescriptionField | None = Field(..., example="Who da heck is John Doe?")
+        name: ProfileNameField = Field(..., example="John Doe")

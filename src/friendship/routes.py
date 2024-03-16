@@ -7,7 +7,7 @@ from fastapi import APIRouter, Path, status
 
 from src.auth.dependencies import Authorization
 from src.friendship import controllers
-from src.friendship.dtos import GetOutgoingRequestsResponse
+from src.friendship.dtos import GetIncomingRequestsResponse, GetOutgoingRequestsResponse
 from src.shared import swagger as shared_swagger
 
 
@@ -73,3 +73,46 @@ async def cancel_outgoing_request(
     authorization: Authorization,
 ) -> None:
     return await controllers.cancel_outgoing_request(account_id, friend_id, authorization)
+
+
+@router.get(
+    "/accounts/{account_id}/friends/incoming",
+    description="Get incoming friendship requests which was sent by `account_id`",
+    status_code=status.HTTP_200_OK,
+    summary="Get incoming requests.",
+)
+async def get_incoming_requests(
+    account_id: Annotated[IdField, Path(example=42)],
+    authorization: Authorization,
+) -> GetIncomingRequestsResponse:
+    return await controllers.get_incoming_requests(account_id, authorization)
+
+
+@router.post(
+    "/accounts/{account_id}/friends/accepted/{friend_id}",
+    description="Accept friendship request which was sent by `friend_id` to `account_id`.",
+    response_model=None,
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Accept incoming friendship request.",
+)
+async def accept_incoming_request(
+    account_id: Annotated[IdField, Path(example=42)],
+    friend_id: Annotated[IdField, Path(example=18)],
+    authorization: Authorization,
+) -> None:
+    return await controllers.accept_incoming_request(account_id, friend_id, authorization)
+
+
+@router.delete(
+    "/accounts/{account_id}/friends/incoming/{friend_id}",
+    description="Reject incoming friendship request which was sent by `friend_id` to `account_id`.",
+    response_model=None,
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Reject incoming request.",
+)
+async def reject_incoming_request(
+    account_id: Annotated[IdField, Path(example=42)],
+    friend_id: Annotated[IdField, Path(example=18)],
+    authorization: Authorization,
+) -> None:
+    return await controllers.reject_incoming_request(account_id, friend_id, authorization)
