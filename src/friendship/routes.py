@@ -7,7 +7,7 @@ from fastapi import APIRouter, Path, status
 
 from src.auth.dependencies import Authorization
 from src.friendship import controllers
-from src.friendship.dtos import GetIncomingRequestsResponse, GetOutgoingRequestsResponse
+from src.friendship.dtos import GetAcceptedFriendsResponse, GetIncomingRequestsResponse, GetOutgoingRequestsResponse
 from src.shared import swagger as shared_swagger
 
 
@@ -116,3 +116,32 @@ async def reject_incoming_request(
     authorization: Authorization,
 ) -> None:
     return await controllers.reject_incoming_request(account_id, friend_id, authorization)
+
+
+
+@router.get(
+    "/accounts/{account_id}/friends/accepted",
+    description="Get friends related to `account_id`",
+    status_code=status.HTTP_200_OK,
+    summary="Get accepted friends.",
+)
+async def get_accepted_friends(
+    account_id: Annotated[IdField, Path(example=42)],
+    authorization: Authorization,
+) -> GetAcceptedFriendsResponse:
+    return await controllers.get_accepted_friends(account_id, authorization)
+
+
+@router.delete(
+    "/accounts/{account_id}/friends/accepted/{friend_id}",
+    description="Delete friendships between `account_id` and `friend_id`.",
+    response_model=None,
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete friend",
+)
+async def delete_friend(
+    account_id: Annotated[IdField, Path(example=42)],
+    friend_id: Annotated[IdField, Path(example=18)],
+    authorization: Authorization,
+) -> None:
+    return await controllers.delete_friend(account_id, friend_id, authorization)

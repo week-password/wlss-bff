@@ -67,7 +67,7 @@ async def get_profile(account_id: Id, authorization: Authorization) -> GetProfil
             break
 
     for friendship in friendships_response.friendships:
-        if friendship.account_id == account_id and friendship.friend_id == current_account_id:
+        if friendship.account_id == current_account_id and friendship.friend_id == account_id:
             friendship_status = FriendshipStatus.ACCEPTED_REQUEST
             break
 
