@@ -5,7 +5,7 @@ from fastapi import APIRouter, status
 
 from src.auth.dependencies import Authorization
 from src.profile import controllers
-from src.profile.dtos import GetProfileResponse, UpdateProfileRequest, UpdateProfileResponse
+from src.profile.dtos import GetProfileResponse, SearchProfilesResponse, UpdateProfileRequest, UpdateProfileResponse
 from src.shared import swagger as shared_swagger
 
 
@@ -25,6 +25,19 @@ router = APIRouter(tags=["profile"])
 )
 async def get_profile(account_id: IdField, authorization: Authorization) -> GetProfileResponse:
     return await controllers.get_profile(account_id, authorization)
+
+@router.get(
+    "/profiles",
+    description="Get multiple profiles.",
+    responses={
+        status.HTTP_200_OK: {"description": "Multiple profiles returned."},
+        status.HTTP_401_UNAUTHORIZED: shared_swagger.responses[status.HTTP_401_UNAUTHORIZED],
+    },
+    status_code=status.HTTP_200_OK,
+    summary="Get profiles.",
+)
+async def search_profiles(authorization: Authorization) -> SearchProfilesResponse:
+    return await controllers.search_profiles(authorization)
 
 
 @router.put(
