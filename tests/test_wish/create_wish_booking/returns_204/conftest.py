@@ -1,17 +1,23 @@
 from __future__ import annotations
 
+import jwt
 import pytest
 from mbtest.imposters.predicates import Predicate
 from mbtest.imposters.responses import Response
 
 
 @pytest.fixture
-def create_wish_booking_request():
+def access_token():
+    return jwt.encode({"account_id": 1}, key="some-secret-key")
+
+
+@pytest.fixture
+def create_wish_booking_request(access_token):
     return Predicate(
         method="POST",
         path="/accounts/2/wishes/1/bookings",
         body={"account_id": 1},
-        headers={"Authorization": "Bearer token"},
+        headers={"Authorization": f"Bearer {access_token}"},
     )
 
 @pytest.fixture

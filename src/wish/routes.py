@@ -3,15 +3,79 @@ from __future__ import annotations
 from typing import Annotated
 
 from api.shared.fields import IdField
-from fastapi import APIRouter, Body, Path, status
+from fastapi import APIRouter, Path, status
 
 from src.auth.dependencies import Authorization
 from src.shared import swagger as shared_swagger
 from src.wish import controllers
-from src.wish.dtos import CreateWishBookingRequest
+from src.wish.dtos import (
+    CreateWishRequest,
+    CreateWishResponse,
+    GetAccountWishesResponse,
+    UpdateWishRequest,
+    UpdateWishResponse,
+)
 
 
 router = APIRouter(tags=["wish"])
+
+
+@router.post(
+    "/accounts/{account_id}/wishes",
+    description="Create wish for particular account.",
+    responses={
+        status.HTTP_201_CREATED: {"description": "Created wish returned."},
+        status.HTTP_401_UNAUTHORIZED: shared_swagger.responses[status.HTTP_401_UNAUTHORIZED],
+        status.HTTP_403_FORBIDDEN: shared_swagger.responses[status.HTTP_403_FORBIDDEN],
+        status.HTTP_404_NOT_FOUND: shared_swagger.responses[status.HTTP_404_NOT_FOUND],
+    },
+    status_code=status.HTTP_201_CREATED,
+    summary="Create wish.",
+)
+async def create_wish(
+    account_id: Annotated[IdField, Path(example=42)],
+    request_data: CreateWishRequest,
+    authorization: Authorization,
+) -> CreateWishResponse:
+    return await controllers.create_wish(account_id, request_data, authorization)
+
+
+@router.put(
+    "/accounts/{account_id}/wishes/{wish_id}",
+    description="Update particular wish.",
+    responses={
+        status.HTTP_200_OK: {"description": "Updated wish returned."},
+        status.HTTP_401_UNAUTHORIZED: shared_swagger.responses[status.HTTP_401_UNAUTHORIZED],
+        status.HTTP_403_FORBIDDEN: shared_swagger.responses[status.HTTP_403_FORBIDDEN],
+        status.HTTP_404_NOT_FOUND: shared_swagger.responses[status.HTTP_404_NOT_FOUND],
+    },
+    status_code=status.HTTP_200_OK,
+    summary="Update wish.",
+)
+async def update_wish(
+    account_id: Annotated[IdField, Path(example=42)],
+    wish_id: Annotated[IdField, Path(example=18)],
+    request_data: UpdateWishRequest,
+    authorization: Authorization,
+) -> UpdateWishResponse:
+    return await controllers.update_wish(account_id, wish_id, request_data, authorization)
+
+
+@router.get(
+    "/accounts/{account_id}/wishes",
+    description="Get wishes created by particular account.",
+    responses={
+        status.HTTP_200_OK: {"description": "Wishes returned."},
+        status.HTTP_401_UNAUTHORIZED: shared_swagger.responses[status.HTTP_401_UNAUTHORIZED],
+        status.HTTP_403_FORBIDDEN: shared_swagger.responses[status.HTTP_403_FORBIDDEN],
+        status.HTTP_404_NOT_FOUND: shared_swagger.responses[status.HTTP_404_NOT_FOUND],
+    },
+)
+async def get_account_wishes(
+    account_id: Annotated[IdField, Path(example=42)],
+    authorization: Authorization,
+) -> GetAccountWishesResponse:
+    return await controllers.get_account_wishes(account_id, authorization)
 
 
 @router.delete(
@@ -51,10 +115,9 @@ async def delete_wish(
 async def create_wish_booking(
     account_id: Annotated[IdField, Path(example=42)],
     wish_id: Annotated[IdField, Path(example=18)],
-    request_data: Annotated[CreateWishBookingRequest, Body()],
     authorization: Authorization,
 ) -> None:
-    return await controllers.create_wish_booking(account_id, wish_id, request_data, authorization)
+    return await controllers.create_wish_booking(account_id, wish_id, authorization)
 
 
 @router.delete(
