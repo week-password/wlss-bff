@@ -46,13 +46,13 @@ develop = false
 [package.dependencies]
 httpx = "^0.24.0"
 pydantic = "^2.5.3"
-wlss = {git = "https://github.com/week-password/wlss-backend-lib.git", rev = "e2c11e344d096579e2582c45fb08007195ebcc8d"}
+wlss = {git = "https://github.com/week-password/wlss-backend-lib.git", rev = "b92ffd515451215501cc08b9ecb15433466262d0"}
 
 [package.source]
 type = "git"
 url = "https://github.com/week-password/wlss-backend.git"
-reference = "b624aaf6975a40e9316cf351c1c1758486505be4"
-resolved_reference = "b624aaf6975a40e9316cf351c1c1758486505be4"
+reference = "1eae3b88d4643ad72624b1dd99d02fb0b407da7e"
+resolved_reference = "1eae3b88d4643ad72624b1dd99d02fb0b407da7e"
 
 [[package]]
 name = "beautifulsoup4"
@@ -1827,8 +1827,8 @@ typing-extensions = "^4.5.0"
 [package.source]
 type = "git"
 url = "https://github.com/week-password/wlss-backend-lib.git"
-reference = "e2c11e344d096579e2582c45fb08007195ebcc8d"
-resolved_reference = "e2c11e344d096579e2582c45fb08007195ebcc8d"
+reference = "b92ffd515451215501cc08b9ecb15433466262d0"
+resolved_reference = "b92ffd515451215501cc08b9ecb15433466262d0"
 
 [[package]]
 name = "wrapt"
@@ -1913,4 +1913,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "69d17b9d77461a0123a9442b20d25db7a417b2c7d06a665c97b0123189930e01"
+content-hash = "36a2a251aab53707d5a87f9f38a6c4f693f5a3791f387039792c7e94809d460f"
