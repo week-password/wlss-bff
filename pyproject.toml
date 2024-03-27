@@ -15,12 +15,12 @@ python = "~3.11"
 optional = true
 
 [tool.poetry.group.app.dependencies]
-api = {git = "https://github.com/week-password/wlss-backend.git", rev = "1eae3b88d4643ad72624b1dd99d02fb0b407da7e"}
+api = {git = "https://github.com/week-password/wlss-backend.git", rev = "60be13e047dcae441c328c84981327d27f20e06c"}
 fastapi = {extras = ["all"], version = "0.109.0" }  # we need "all" at least for uvicorn
 pydantic = "2.5.3"
 pyjwt = "2.8.0"
 varname = "0.12.0"
-wlss = {git = "https://github.com/week-password/wlss-backend-lib.git", rev = "b92ffd515451215501cc08b9ecb15433466262d0"}
+wlss = {git = "https://github.com/week-password/wlss-backend-lib.git", rev = "8a902f4ac04faed024bcc11e6995b2edb94e9e66"}
 
 
 [tool.poetry.group.lint]
